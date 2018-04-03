@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.bdqn.dao.AdminMapper">
+    
+    <resultMap id="adminMap" type="Admin">
+        <id property="adminId" column="Admin_id"></id>
+        <result property="visbble" column="visbble"></result>
+        <result property="adminName" column="Addmin_Name"></result>
+        <result property="adminRank" column="Admin_Rank"></result>
+        <result property="adminRote" column="Admin_Rote"></result>
+        <result property="adminTime" column="Admin_Time"></result>
+        <result property="password" column="password"></result>
+
+    </resultMap>
+
+    <select id="queryAdminById" parameterType="integer" resultMap="adminMap">
+        SELECT * FROM admin
+        WHERE
+        visbble=1
+        AND
+        Admin_id=#{id}
+    </select>
+    
+    <select id="queryAllAdmin" resultMap="adminMap">
+        SELECT * FROM admin WHERE
+        visbble=1
+        ORDER BY Admin_id
+    </select>
+    <update id="updateAdminByAdminRank" parameterType="Admin">
+      UPDATE admin SET Admin_Rank=#{adminRank} WHERE Admin_id=#{adminId}
+      and
+      visbble=1
+    </update>
+    <update id="updateAdminByAdminId" parameterType="integer">
+        UPDATE admin SET visbble=0 WHERE Admin_id=#{id}
+    </update>
+    <select id="AdminLogin" resultMap="adminMap">
+        SELECT * FROM admin WHERE
+        visbble=1
+        AND
+        Addmin_Name=#{adminName}
+        and
+        password=#{password}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.OrderFormMapper">
+    <resultMap id="orderMap" type="cn.bdqn.vo.OrderFormVo">
+        <id property="id" column="ofid"/>
+<association property="hotel" resultMap="hotleMap"></association>
+<association property="aPackage" resultMap="packageMap"></association>
+<association property="user" resultMap="userMap"></association>
+        <association property="checkInformation" resultMap="cinfoMap"/>
+    </resultMap>
+
+
+    <!--酒店-->
+<resultMap id="hotleMap" type="Hotel">
+    <id property="hotelId" column="hoid"/>
+    <result property="hotelName" column="hotel_name"/>
+    <result property="hotelDatail" column="hotel_datail"/>
+    <result property="hotelPhone" column="hotel_phone"/>
+    <result property="hotelAddress" column="hotel_address"/>
+    <result property="hotelStarId" column="hotel_starid"/>
+    <result property="visbble" column="visbble"></result>
+</resultMap>
+    <!--套餐-->
+    <resultMap id="packageMap" type="Package">
+        <id property="comboId" column="coid"/>
+        <result property="combo" column="combo"/>
+        <result property="comboPrice" column="combo_price"/>
+        <result property="comboTime" column="combo_time"/>
+        <result property="comboHotel" column="combo_hotel"/>
+        <result property="comboAir" column="combo_air"/>
+        <result property="comboTime" column="combo——settime"/>
+        <result property="visbble" column="visbble"/>
+    </resultMap>
+    <!--用户-->
+    <resultMap id="userMap" type="User">
+        <id property="id" column="uid"/>
+        <result property="userName" column="userName"/>
+        <result property="password" column="password"/>
+        <result property="nickName" column="nickName"/>
+        <result property="phone" column="phone"/>
+        <result property="verificationCode" column="Verification_Code"/>
+        <result property="visbble" column="vidbblle"/>
+    </resultMap>
+
+<!--入住信息-->
+    <resultMap id="cinfoMap" type="checkInformation">
+
+        <id property="checkId" column="chid"></id>
+        <result property="checkName" column="check_name"/>
+        <result property="checkPhone" column="check_phone"/>
+        <result property="check_intime" column="check_intime"/>
+
+
+    </resultMap>
+    <select id="queryAllOrderForm" resultMap="orderMap">
+       SELECT ch.check_Id AS chid, us.id AS uid,pa.combo_id AS coid,ho.hotel_id AS hoid,of.id AS ofid,ch.check_intime
+  ,pa.combo_time,ch.check_name,ch.check_phone,
+  us.userName,us.nickName,pa.combo,ho.hotel_datail,ho.hotel_name,pa.combo_hotel
+FROM USER us, package pa, hotel ho,order_form of,check_information ch WHERE
+  us.id=of.user_id AND of.combo_id=pa.combo_id AND of.hotel_id=ho.hotel_id AND ch.hotel_id=us.id AND
+  of.visbble=1
+    </select>
+    <!--删除-->
+    <update id="deleteOrderForm" parameterType="integer">
+       UPDATE order_form SET visbble=0 WHERE id=#{id}
+    </update>
+
+    <select id="queryOrderFormVoById" parameterType="integer" resultMap="orderMap">
+             SELECT ch.check_Id AS chid, us.id AS uid,pa.combo_id AS coid,ho.hotel_id AS hoid,of.id AS ofid,ch.check_intime
+  ,pa.combo_time,ch.check_name,ch.check_phone,
+  us.userName,us.nickName,pa.combo,ho.hotel_datail,ho.hotel_name,pa.combo_hotel
+FROM USER us, package pa, hotel ho,order_form of,check_information ch WHERE
+  us.id=of.user_id AND of.combo_id=pa.combo_id AND of.hotel_id=ho.hotel_id AND ch.hotel_id=us.id AND
+  of.visbble=1 AND of.id=#{id}
+    </select>
+
+
+<!--修改-->
+
+    <update id="updateOrderForm">
+        UPDATE check_information
+        SET check_intime = #{check_intime}
+        WHERE check_Id = #{checkId};
+    </update>
+</mapper>
