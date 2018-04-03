@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.MealMapper">
+    <resultMap id="MealMap" type="Meal">
+        <id property="mealid" column="meal_id"></id>
+        <result property="meal" column="meal"></result>
+        <result property="mealprice" column="meal_price"></result>
+        <result property="mealhotel" column="meal_hotel"></result>
+        <result property="mealair" column="meal_air"></result>
+        <result property="mealsettime" column="meal_settime"></result>
+        <result property="mealphoto" column="meal_photo"></result>
+        <result property="visbble" column="visbble"></result>
+        <result property="mealxiang" column="meal_xiang"></result>
+    </resultMap>
+    <insert id="addMeal" parameterType="Meal">
+    INSERT into meal VALUES (NULL ,#{meal},#{mealprice},#{mealhotel},#{mealair},#{mealsettime},#{mealphoto},1,#{mealxiang})
+    </insert>
+    <select id="queryAll" resultMap="MealMap">
+        SELECT *FROM meal WHERE visbble=1 ORDER BY meal_settime DESC
+    </select>
+    <update id="deleteMealById">
+        UPDATE meal SET visbble=0 WHERE meal_id=#{mealid}
+    </update>
+</mapper>
